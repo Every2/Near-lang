@@ -1,0 +1,2 @@
+/home/christian/Área de trabalho/Near-lang/build/CMakeFiles/edit_cache.dir
+/home/christian/Área de trabalho/Near-lang/build/CMakeFiles/rebuild_cache.dir
