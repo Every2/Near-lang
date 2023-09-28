@@ -4,7 +4,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <vector>
-#include "../Type/tokenType.hpp"
+#include "../Token/token.hpp"
 #include "filestream.hpp"
 #include "../Error/errorHandler.hpp"
 

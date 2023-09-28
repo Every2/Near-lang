@@ -1,7 +1,4 @@
 #include "Scanner.hpp"
-#include <cstddef>
-#include <optional>
-
 
 bool Scanner::isAtEnd() {
     return current >= source.length();
@@ -44,5 +41,63 @@ void Scanner::scanToken() {
         case '+': addToken(Types::TokenType::PLUS); break;
         case ';': addToken(Types::TokenType::SEMICOLON); break;
         case '*': addToken(Types::TokenType::STAR); break;
+        case '!':
+            addToken(match('=' ) ? Types::TokenType::BANG_EQUAL : Types::TokenType::BANG);
+            break;
+        case '=':
+            addToken(match('=') ? Types::TokenType::EQUAL_EQUAL : Types::TokenType::EQUAL);
+            break;
+        case '<':
+            addToken(match('=') ? Types::TokenType::LESS_EQUAL : Types::TokenType::LESS);
+            break;
+        case '>':
+            addToken(match('=') ? Types::TokenType::GREATER_EQUAL : Types::TokenType::GREATER);
+            break;
+        case '/':
+            if (match('/')) {
+                while (peek() != '\n' && !isAtEnd()) advance();
+            }
+            else {
+                addToken(Types::TokenType::SLASH);
+            }
+            break;
+        case ' ':
+        case '\r':
+        case '\t':
+            break;
+        
+        case '\n': line++; break;
+        case '"': string();
+        default: ErrorHandler::error(line, "Unexpected character."); break;
     }
+}
+
+bool Scanner::match(char expected) {
+    if (isAtEnd()) return false;
+    if (source.at(current) != expected) return false;
+
+    current++;
+    return true;
+}
+
+char Scanner::peek() {
+    if (isAtEnd()) return '\0';
+    return source.at(current);
+}
+
+void Scanner::string() {
+    while (peek() != '"' && !isAtEnd()) {
+        if (peek() == '\n') line++;
+        advance();
+    }
+
+    if (isAtEnd()) {
+        ErrorHandler::error(line, "unterminated string");
+        return;
+    }
+
+    advance();
+
+    std::string value {source.substr(start + 1, current - 1)};
+    addToken(Types::TokenType::STRING, value);
 }

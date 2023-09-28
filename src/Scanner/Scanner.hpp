@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 #include "../Token/token.hpp"
+#include "../Error/errorHandler.hpp"
 
 
 class Scanner {
@@ -21,4 +22,7 @@ private:
     char advance();
     void addToken(Types::TokenType type);
     void addToken(Types::TokenType type, std::string& literal);
+    bool match(char expected);
+    char peek();
+    void string();
 };
