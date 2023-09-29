@@ -12,7 +12,6 @@ public:
     Scanner(const std::string& source) : source(source) {}
     std::vector<Token> scanTokens();
     
-
 private:
     int start {0};
     int current {0};
