@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 #include <any>
+#include <map>
 #include "../Token/token.hpp"
 #include "../Error/errorHandler.hpp"
 
@@ -29,4 +30,8 @@ private:
     bool isDigit(char c);
     void number();
     char peekNext();
+    void identifier();
+    bool isAlpha(char c);
+    bool isAlphaNumeric(char c);
+    const static std::map<std::string, Types::TokenType> keywords;
 };

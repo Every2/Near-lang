@@ -4,16 +4,15 @@
 #include <sstream>
 #include <stdexcept>
 #include <vector>
-#include "../Token/token.hpp"
 #include "filestream.hpp"
-#include "../Error/errorHandler.hpp"
+#include "../Scanner/Scanner.hpp"
 
 void Stream::run(std::string& source) {
-    Scanner scanner {new Scanner(source)};
-    std::vector<Token> tokens{source};
+    Scanner scanner {source};
+    std::vector<Token> tokens {scanner.scanTokens()};
 
-    for (Token token: tokens) {
-        std::cout << token;
+    for (Token token : tokens) {
+        std::cout << token << '\n';
     }
 }
 
@@ -26,7 +25,8 @@ void Stream::runFile(const std::string& path) {
 
         std::stringstream buffer;
         buffer << file.rdbuf();
-        run(buffer.str());
+        std::string convertBuffer {buffer.str()};
+        run(convertBuffer);
         ErrorHandler::hadError = false;
     }
     catch (const std::exception& e){
@@ -35,9 +35,10 @@ void Stream::runFile(const std::string& path) {
 }
 
 void Stream::runPrompt() {
-    std::string line;
     while (true) {
-        if (!std::getline(std::cin, line) || line.empty()) {
+        std::cout << ">  ";
+        std::string line;
+        if (!getline(std::cin, line)) {
             break;
         }
         run(line);

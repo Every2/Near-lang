@@ -1,5 +1,7 @@
+#include <ostream>
 #include <string>
 #include <any>
+#include "map"
 
 namespace Types {
     #undef NULL
@@ -32,9 +34,13 @@ public:
     
     Token(Types::TokenType type, std::string& lexeme, std::any literal, int line): type(type), lexeme(lexeme), line(line), literal(literal) {}
     
+
+    static std::map<Types::TokenType, std::string> stringTypes;
     const Types::TokenType type;
     const std::string lexeme;
     const std::any literal;
     const int line;
-
+    std::string toString() const;
+    friend std::ostream& operator<<(std::ostream& os, const Token& token);
 };
+

@@ -1,6 +1,7 @@
 #include "Scanner.hpp"
 
 
+
 bool Scanner::isAtEnd() {
     return current >= source.length();
 }
@@ -9,7 +10,7 @@ std::vector<Token> Scanner::scanTokens() {
     std::string empty {""};
     while (!isAtEnd()) {
         start = current;
-        scanTokens();
+        scanToken();
     }
 
     tokens.push_back(Token(Types::TokenType::EOF, empty, empty, line));
@@ -21,7 +22,7 @@ char Scanner::advance() {
 }
 
 void Scanner::addToken(Types::TokenType type) {
-    addToken(type);
+    addToken(type, "");
 }
 
 void Scanner::addToken(Types::TokenType type, std::any literal) {
@@ -69,9 +70,17 @@ void Scanner::scanToken() {
         
         case '\n': line++; break;
         case '"': string();
+        case 'o':
+            if (match('r')) {
+                addToken(Types::TokenType::OR);
+            }
+            break;
         default: 
             if (isDigit(c)) {
                 number();
+            }
+            else if (isAlpha(c)) {
+                identifier();
             }
             else {
                 ErrorHandler::error(line, "Unexpected character."); 
@@ -122,7 +131,6 @@ void Scanner::number() {
         while (isDigit(peek())) advance();
     }
 
-    double teste {std::stod(source.substr(start, current))};
     addToken(Types::TokenType::NUMBER, std::stod(source.substr(start, current)));
 }
 
@@ -130,3 +138,42 @@ char Scanner::peekNext() {
     if (current + 1 >= source.length()) return '\0';
     return source.at(current + 1);
 }
+
+void Scanner::identifier() {
+    while(isAlphaNumeric(peek())) advance();
+
+    std::string text {source.substr(start, current)};
+    auto checkToken {keywords.find(text)};
+    Types::TokenType type {Types::TokenType::IDENTIFIER};
+    if (checkToken != keywords.end()) {
+        type = checkToken->second;
+    }
+    addToken(type);
+}
+
+bool Scanner::isAlpha(char c) {
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == '_');
+}
+
+bool Scanner::isAlphaNumeric(char c) {
+    return isAlpha(c) || isDigit(c);
+}
+
+const std::map<std::string, Types::TokenType>Scanner::keywords {
+    {"and", Types::TokenType::AND},
+    {"class", Types::TokenType::CLASS},
+    {"else", Types::TokenType::ELSE},
+    {"false", Types::TokenType::FALSE},
+    {"for", Types::TokenType::FOR},
+    {"fun", Types::TokenType::FUN},
+    {"if", Types::TokenType::IF},
+    {"null", Types::TokenType::NULL},
+    {"or", Types::TokenType::OR},
+    {"print", Types::TokenType::PRINT},
+    {"return", Types::TokenType::RETURN},
+    {"super", Types::TokenType::SUPER},
+    {"this", Types::TokenType::THIS},
+    {"true", Types::TokenType::TRUE},
+    {"var", Types::TokenType::VAR},
+    {"while", Types::TokenType::WHILE},
+};

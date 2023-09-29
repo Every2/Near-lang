@@ -1,6 +1,6 @@
 #include <iostream>
-#include "Stream/filestream.hpp"
-#include "Error/errorHandler.hpp"
+#include "src/Stream/filestream.hpp"
+#include "src/Error/errorHandler.hpp"
 
 int main(int argc, char* argv[]) {
     Stream file;
@@ -9,9 +9,9 @@ int main(int argc, char* argv[]) {
         if(ErrorHandler::hadError) std::exit(64);
     }
     else if (argc == 2) {
-       file.runFile(argv[0]);
+       file.runFile(argv[1]);
     }
     else {
-       file.runPrompt();
+      file.runPrompt();
     }
 }
