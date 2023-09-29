@@ -1,5 +1,6 @@
 #include "Scanner.hpp"
 
+
 bool Scanner::isAtEnd() {
     return current >= source.length();
 }
@@ -11,7 +12,7 @@ std::vector<Token> Scanner::scanTokens() {
         scanTokens();
     }
 
-    tokens.push_back(Token(Types::TokenType::EOF, empty, empty , line));
+    tokens.push_back(Token(Types::TokenType::EOF, empty, empty, line));
     return tokens;
 }
 
@@ -23,7 +24,7 @@ void Scanner::addToken(Types::TokenType type) {
     addToken(type);
 }
 
-void Scanner::addToken(Types::TokenType type, std::string& literal) {
+void Scanner::addToken(Types::TokenType type, std::any literal) {
     std::string text {source.substr(start, current)};
     tokens.push_back(Token(type, text, literal, line));
 }
@@ -68,7 +69,14 @@ void Scanner::scanToken() {
         
         case '\n': line++; break;
         case '"': string();
-        default: ErrorHandler::error(line, "Unexpected character."); break;
+        default: 
+            if (isDigit(c)) {
+                number();
+            }
+            else {
+                ErrorHandler::error(line, "Unexpected character."); 
+                break;
+            }
     }
 }
 
@@ -99,5 +107,26 @@ void Scanner::string() {
     advance();
 
     std::string value {source.substr(start + 1, current - 1)};
-    addToken(Types::TokenType::STRING, value);
+    addToken(Types::TokenType::STRING, value); 
+}
+
+bool Scanner::isDigit(char c) {
+    return c >= '0' && c <= '9';
+}
+
+void Scanner::number() {
+    while(isDigit(peek())) advance();
+
+    if (peek() == '.' && isDigit(peekNext())) {
+        advance();
+        while (isDigit(peek())) advance();
+    }
+
+    double teste {std::stod(source.substr(start, current))};
+    addToken(Types::TokenType::NUMBER, std::stod(source.substr(start, current)));
+}
+
+char Scanner::peekNext() {
+    if (current + 1 >= source.length()) return '\0';
+    return source.at(current + 1);
 }

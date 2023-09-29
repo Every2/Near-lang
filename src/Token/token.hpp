@@ -1,4 +1,5 @@
 #include <string>
+#include <any>
 
 namespace Types {
     #undef NULL
@@ -29,11 +30,11 @@ class Token {
 
 public:
     
-    Token(Types::TokenType type, std::string& lexeme, std::string& literal, int line): type(type), lexeme(lexeme), line(line), literal(literal) {}
+    Token(Types::TokenType type, std::string& lexeme, std::any literal, int line): type(type), lexeme(lexeme), line(line), literal(literal) {}
     
     const Types::TokenType type;
     const std::string lexeme;
-    const std::string literal;
+    const std::any literal;
     const int line;
 
 };

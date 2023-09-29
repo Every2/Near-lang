@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <any>
 #include "../Token/token.hpp"
 #include "../Error/errorHandler.hpp"
 
@@ -21,8 +22,11 @@ private:
     void scanToken();
     char advance();
     void addToken(Types::TokenType type);
-    void addToken(Types::TokenType type, std::string& literal);
+    void addToken(Types::TokenType type, std::any literal);
     bool match(char expected);
     char peek();
     void string();
+    bool isDigit(char c);
+    void number();
+    char peekNext();
 };
