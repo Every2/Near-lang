@@ -1,7 +1,5 @@
 #include "Scanner.hpp"
 
-
-
 bool Scanner::isAtEnd() {
     return current >= source.length();
 }
