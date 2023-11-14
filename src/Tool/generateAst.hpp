@@ -1,0 +1,5 @@
+import <iostream>
+
+class GenerateAst {
+
+};
