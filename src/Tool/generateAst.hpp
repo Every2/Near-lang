@@ -10,8 +10,8 @@ class GenerateAst {
 
 
 private:
-    static void defineAst(std::string outputDir, 
-    std::string baseName, std::vector<std::string> types) {
+    static void defineAst(std::string& outputDir, 
+    std::string& baseName, std::vector<std::string>& types) {
         try  {
 
             std::string path {outputDir + "/" + baseName + ".cpp"};
