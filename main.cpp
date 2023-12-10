@@ -5,7 +5,7 @@
 int main(int argc, char* argv[]) {
     Stream file;
     if (argc > 2) {
-        std::cout << "Usage: jlox[script]";
+        std::cout << "Usage: Near[script]";
         if(ErrorHandler::hadError) std::exit(64);
     }
     else if (argc == 2) {
