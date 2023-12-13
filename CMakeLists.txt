@@ -10,6 +10,8 @@ set(SOURCES
     src/Stream/filestream.hpp
     src/Scanner/Scanner.hpp
     src/Token/token.hpp
+        include/stringTrim.hpp
+        include/stringSplit.hpp
 )
 
 

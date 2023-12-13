@@ -18,26 +18,21 @@ private:
             std::ofstream writer(path);
 
             if (writer.is_open()) {
-                writer << "#include main.cpp" << '\n';
+                writer << "#include <iostream>" << '\n';
                 writer << '\n';
                 writer << "#include <vector>" << '\n';
                 writer << '\n';
-                writer <<  "abstract class " << baseName << " {";
-
+                writer <<  "Class " << baseName << " {";
+                writer << '\n';
+                writer << "public: " << '\n';
+                writer << " virtual " << '~' << baseName << "()" << " =" << " default" << '\n';
                 writer << "}";
                 writer.close();
             }
-            std::for_each(types.begin(), types.end(), [baseName](const std::string& type) {
-                std::istringstream iss(type);
-                std::string className, fields;
 
-                std::getline(iss, className, ':');
-                std::getline(iss, fields);
+            for (std::string type : types) {
 
-                className.erase(className.find_last_not_of(" \t") + 1);
-                fields.erase(fields.find_first_not_of(" \t"));
-                defineType(writer, baseName, className, fields);
-            });
+            }
 
             throw std::runtime_error("IoExpection");
 
