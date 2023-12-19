@@ -9,7 +9,7 @@ std::string trim_left(const std::string& str) {
 
 std::string trim_right(const std::string& str) {
     const std::string pattern {"\f\n\r\t\v"};
-    return str.substr(0,str.find_last_not_of(pattern) + 1);
+    return str.substr(0, str.find_last_not_of(pattern) + 1);
 }
 
 std::string trim(const std::string& str) {
