@@ -7,23 +7,23 @@ pub struct Token<'a> {
 }
 
 #[derive(Debug)]
-enum TokenLiteral<'a> {
+pub enum TokenLiteral<'a> {
     StringLiteral(&'a str),
     NumberLiteral(f64),
     Identifier(&'a str)
 }
 
 #[derive(Debug)]
-enum TokenType {
+pub enum TokenType {
     // Single-character tokens.
     LeftParen, RightParen, LeftBrace, RightBrace,
     COMMA, DOT, MINUS, PLUS, SEMICOLON, SLASH, STAR,
 
     // One or two character tokens.
-    BANG, BANG_EQUAL,
-    EQUAL, EQUAL_EQUAL,
-    GREATER, GREATER_EQUAL,
-    LESS, LESS_EQUAL,
+    BANG, BangEqual,
+    EQUAL, EqualEqual,
+    GREATER, GreaterEqual,
+    LESS, LessEqual,
 
     // Literals.
     IDENTIFIER, STRING, NUMBER,
@@ -43,22 +43,22 @@ impl<'a> std::fmt::Display for Token<'a> {
             TokenType::STRING => "STRING".to_string(),
             TokenType::AND => "AND".to_string(),
             TokenType::BANG => "BANG".to_string(),
-            TokenType::BANG_EQUAL => "BANG_EQUAL".to_string(),
+            TokenType::BangEqual => "BANG_EQUAL".to_string(),
             TokenType::CLASS => "CLASS".to_string(),
             TokenType::COMMA => "COMMA".to_string(),
             TokenType::DOT => "DOT".to_string(),
             TokenType::ELSE => "ELSE".to_string(),
             TokenType::EOF => "EOF".to_string(),
             TokenType::EQUAL => "EQUAL".to_string(),
-            TokenType::EQUAL_EQUAL => "EQUAL_EQUAL".to_string(),
+            TokenType::EqualEqual => "EQUAL_EQUAL".to_string(),
             TokenType::FALSE => "FALSE".to_string(),
             TokenType::FOR => "FOR".to_string(),
             TokenType::FUN => "FUN".to_string(),
             TokenType::GREATER => "GREATER".to_string(),
-            TokenType::GREATER_EQUAL => "GREATER_EQUAL".to_string(),
+            TokenType::GreaterEqual => "GREATER_EQUAL".to_string(),
             TokenType::IF => "IF".to_string(),
             TokenType::LESS => "LESS".to_string(),
-            TokenType::LESS_EQUAL => "LESS_EQUAL".to_string(),
+            TokenType::LessEqual => "LESS_EQUAL".to_string(),
             TokenType::LeftBrace => "LeftBrace".to_string(),
             TokenType::LeftParen => "LeftParen".to_string(),
             TokenType::MINUS => "MINUS".to_string(),
@@ -81,5 +81,16 @@ impl<'a> std::fmt::Display for Token<'a> {
             _ => "UNKNOWN".to_string(), 
         };
         write!(f, "{} {} {:?}", type_str, self.lexeme, self.literal)
+    }
+}
+
+impl<'a> Token<'a> {
+    pub fn new(r#type: TokenType, lexeme: &'a str, literal: TokenLiteral<'a>, line: i32) -> Self {
+        Token {
+            r#type,
+            lexeme,
+            literal,
+            line,
+        }
     }
 }
